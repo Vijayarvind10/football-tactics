@@ -2,7 +2,9 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
-const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
+const API =
+  process.env.NEXT_PUBLIC_API_URL ??
+  "https://glistening-smile-production-6954.up.railway.app";
 
 interface QuotaData {
   allowed: boolean;

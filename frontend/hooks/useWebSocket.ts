@@ -4,7 +4,9 @@ import type { WsMessage } from "@/types/match";
 
 type ConnectionStatus = "connecting" | "connected" | "disconnected";
 
-const WS_URL = process.env.NEXT_PUBLIC_WS_URL ?? "ws://localhost:3001/ws";
+const WS_URL =
+  process.env.NEXT_PUBLIC_WS_URL ??
+  "wss://glistening-smile-production-6954.up.railway.app/ws";
 const MAX_RECONNECT_DELAY = 30_000;
 
 export function useWebSocket() {

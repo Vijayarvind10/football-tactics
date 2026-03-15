@@ -1,4 +1,6 @@
-const BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
+const BASE =
+  process.env.NEXT_PUBLIC_API_URL ??
+  "https://glistening-smile-production-6954.up.railway.app";
 
 async function get<T>(path: string): Promise<T> {
   const res = await fetch(`${BASE}${path}`, { next: { revalidate: 30 } });
