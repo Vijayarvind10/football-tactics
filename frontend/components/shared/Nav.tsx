@@ -8,6 +8,7 @@ const links = [
   { href: "/leagues", label: "Leagues" },
   { href: "/compare", label: "Compare" },
   { href: "/players", label: "Players" },
+  { href: "/admin", label: "Admin" },
 ];
 
 export function Nav() {
