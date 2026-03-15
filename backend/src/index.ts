@@ -21,7 +21,12 @@ app.use("*", errorHandler);
 app.use(
   "*",
   cors({
-    origin: ["http://localhost:3000", "https://*.railway.app"],
+    origin: [
+      "http://localhost:3000",
+      "https://*.railway.app",
+      "https://*.vercel.app",
+      "https://football-tactics-bj48.vercel.app",
+    ],
     credentials: true,
   })
 );
