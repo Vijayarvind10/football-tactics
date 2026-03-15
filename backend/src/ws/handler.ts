@@ -1,10 +1,11 @@
-import { createNodeWebSocket } from "@hono/node-ws";
+import { createBunWebSocket } from "hono/bun";
 import type { Hono } from "hono";
-import { joinRoom, leaveRoom, leaveAllRooms, broadcast } from "./rooms";
+import { joinRoom, leaveRoom, leaveAllRooms } from "./rooms";
 
-export function setupWebSocket(app: Hono) {
-  const { injectWebSocket, upgradeWebSocket } = createNodeWebSocket({ app });
+const { upgradeWebSocket, websocket } = createBunWebSocket();
+export { websocket };
 
+export function setupWebSocket(app: Hono): void {
   app.get(
     "/ws",
     upgradeWebSocket(() => ({
@@ -35,6 +36,4 @@ export function setupWebSocket(app: Hono) {
       },
     }))
   );
-
-  return injectWebSocket;
 }

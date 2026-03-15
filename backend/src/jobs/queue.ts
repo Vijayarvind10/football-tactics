@@ -1,11 +1,11 @@
 import { Queue, Worker } from "bullmq";
 import IORedis from "ioredis";
 
-// BullMQ requires ioredis. We use Upstash Redis's ioredis-compatible endpoint.
-const connection = new IORedis(process.env.UPSTASH_REDIS_REST_URL!, {
-  password: process.env.UPSTASH_REDIS_REST_TOKEN,
-  tls: {},
+// BullMQ requires IORedis TCP connection (not REST).
+// REDIS_URL format: rediss://default:TOKEN@hostname:6379
+const connection = new IORedis(process.env.REDIS_URL!, {
   maxRetriesPerRequest: null,
+  tls: process.env.REDIS_URL?.startsWith("rediss://") ? {} : undefined,
 });
 
 export const queues = {

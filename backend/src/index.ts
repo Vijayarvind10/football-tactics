@@ -1,4 +1,3 @@
-import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { env } from "./lib/env";
@@ -10,7 +9,7 @@ import matchesRouter from "./routes/matches";
 import playersRouter from "./routes/players";
 import formationsRouter from "./routes/formations";
 import adminRouter from "./routes/admin";
-import { setupWebSocket } from "./ws/handler";
+import { setupWebSocket, websocket } from "./ws/handler";
 import { queues } from "./jobs/queue";
 import "./jobs/liveSync";
 import "./jobs/standingsSync";
@@ -38,35 +37,28 @@ app.get("/", (c) =>
   c.json({ name: "Football Tactics API", version: "1.0.0", status: "running" })
 );
 
-const injectWebSocket = setupWebSocket(app);
+setupWebSocket(app);
 
 async function scheduleJobs() {
-  // Live sync every 60 seconds
   await queues.liveSync.add(
     "live-poll",
     {},
     { repeat: { every: 60_000 }, removeOnComplete: 100, removeOnFail: 50 }
   );
-  // Daily standings at 02:00 UTC
   await queues.standingsSync.add(
     "daily-standings",
     {},
     { repeat: { pattern: "0 2 * * *" }, removeOnComplete: 10 }
   );
-  console.log("Background jobs scheduled");
+  console.log("⚡ Background jobs scheduled");
 }
 
-const server = serve(
-  {
-    fetch: app.fetch,
-    port: env.PORT,
-  },
-  (info) => {
-    console.log(`⚡ Football Tactics API running on http://localhost:${info.port}`);
-    scheduleJobs().catch(console.error);
-  }
-);
+scheduleJobs().catch(console.error);
 
-injectWebSocket(server);
+console.log(`⚡ Football Tactics API running on http://localhost:${env.PORT}`);
 
-export default app;
+export default {
+  port: env.PORT,
+  fetch: app.fetch,
+  websocket,
+};
