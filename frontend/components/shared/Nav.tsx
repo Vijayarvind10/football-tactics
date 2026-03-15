@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
 
 const links = [
   { href: "/", label: "Live" },
@@ -17,8 +16,10 @@ export function Nav() {
   return (
     <nav
       style={{
-        background: "var(--bg)",
-        borderBottom: "1px solid var(--border-strong)",
+        background: "rgba(8, 8, 8, 0.85)",
+        backdropFilter: "blur(16px)",
+        WebkitBackdropFilter: "blur(16px)",
+        borderBottom: "1px solid var(--border)",
         height: "56px",
         display: "flex",
         alignItems: "center",
@@ -29,29 +30,59 @@ export function Nav() {
         zIndex: 50,
       }}
     >
-      <Link href="/" style={{ color: "var(--accent)", fontWeight: 700, fontSize: "18px", letterSpacing: "-0.02em", textDecoration: "none" }}>
-        Tactics
+      {/* Logo */}
+      <Link
+        href="/"
+        style={{
+          textDecoration: "none",
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+          flexShrink: 0,
+        }}
+      >
+        <div
+          style={{
+            width: "24px",
+            height: "24px",
+            borderRadius: "6px",
+            background: "linear-gradient(135deg, var(--accent) 0%, #818cf8 100%)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: "12px",
+            flexShrink: 0,
+          }}
+        >
+          ⚽
+        </div>
+        <span
+          style={{
+            fontWeight: 700,
+            fontSize: "16px",
+            letterSpacing: "-0.03em",
+            color: "var(--text-primary)",
+          }}
+        >
+          Tactics
+        </span>
       </Link>
-      <div style={{ display: "flex", gap: "4px" }}>
-        {links.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            className={cn("nav-link")}
-            style={{
-              padding: "6px 12px",
-              borderRadius: "8px",
-              fontSize: "14px",
-              fontWeight: 500,
-              textDecoration: "none",
-              color: pathname === link.href ? "var(--text-primary)" : "var(--text-secondary)",
-              background: pathname === link.href ? "var(--surface-2)" : "transparent",
-              transition: "all 0.15s ease",
-            }}
-          >
-            {link.label}
-          </Link>
-        ))}
+
+      {/* Links */}
+      <div style={{ display: "flex", gap: "2px", flex: 1 }}>
+        {links.map((link) => {
+          const isActive =
+            link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
+          return (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={isActive ? "nav-link nav-link-active" : "nav-link"}
+            >
+              {link.label}
+            </Link>
+          );
+        })}
       </div>
     </nav>
   );
