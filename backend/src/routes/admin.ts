@@ -40,7 +40,7 @@ app.post("/sync/standings", async (c) => {
         continue;
       }
 
-      const standingsData = data[0];
+      const standingsData = data;
       const leagueRecord = await db.query.leagues.findFirst({
         where: eq(leagues.apiFootballId, league.id),
       });

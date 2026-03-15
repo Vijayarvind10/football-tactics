@@ -25,7 +25,7 @@ export const standingsSyncWorker = new Worker(
         const data = await getStandings(league.id, CURRENT_SEASON);
         if (!data || data.length === 0) continue;
 
-        const standingsData = data[0];
+        const standingsData = data;
 
         const leagueRecord = await db.query.leagues.findFirst({
           where: eq(leagues.apiFootballId, league.id),
